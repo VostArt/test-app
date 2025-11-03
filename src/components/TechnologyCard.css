@@ -1,0 +1,99 @@
+.technology-card {
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.technology-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.technology-card:active {
+  transform: translateY(0);
+}
+
+.technology-card--completed {
+  border-color: #4caf50;
+  background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
+}
+
+.technology-card--in-progress {
+  border-color: #ff9800;
+  background: linear-gradient(135deg, #fff8f0 0%, #ffecdd 100%);
+}
+
+.technology-card--not-started {
+  border-color: #9e9e9e;
+  background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);
+}
+
+/* Анимация изменения статуса */
+.technology-card {
+  transition: all 0.5s ease;
+}
+
+.technology-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.technology-card__title {
+  margin: 0;
+  color: #333;
+  font-size: 1.25rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.technology-card__status {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.technology-card--completed .technology-card__status {
+  background: rgba(76, 175, 80, 0.1);
+  color: #2e7d32;
+}
+
+.technology-card--in-progress .technology-card__status {
+  background: rgba(255, 152, 0, 0.1);
+  color: #ef6c00;
+}
+
+.technology-card--not-started .technology-card__status {
+  background: rgba(158, 158, 158, 0.1);
+  color: #616161;
+}
+
+.technology-card__description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.technology-card__footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.technology-card__badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  background: #e3f2fd;
+  color: #1976d2;
+  font-weight: 600;
+}
