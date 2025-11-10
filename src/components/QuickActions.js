@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react'; // Добавить useState
+import Modal from './Modal'; // Убедиться что этот импорт есть
 import './QuickActions.css';
 
-function QuickActions({ technologies, setTechnologies }) {
-  const markAllCompleted = () => {
-    setTechnologies(prev => 
-      prev.map(tech => ({ ...tech, status: 'completed' }))
-    );
-  };
+function QuickActions({ technologies, markAllCompleted, resetAllStatuses }) {
+  const [showExportModal, setShowExportModal] = useState(false); // Добавить состояние
 
-  const resetAllStatuses = () => {
-    setTechnologies(prev => 
-      prev.map(tech => ({ ...tech, status: 'not-started' }))
-    );
+  const handleExport = () => {
+    const data = {
+      exportedAt: new Date().toISOString(),
+      technologies: technologies
+    };
+    const dataStr = JSON.stringify(data, null, 2);
+    console.log('Данные для экспорта:', dataStr);
+    setShowExportModal(true); // Открыть модалку вместо alert
   };
 
   const randomNextTechnology = () => {
@@ -22,13 +23,7 @@ function QuickActions({ technologies, setTechnologies }) {
     }
     
     const randomTech = notStarted[Math.floor(Math.random() * notStarted.length)];
-    setTechnologies(prev => 
-      prev.map(tech => 
-        tech.id === randomTech.id ? { ...tech, status: 'in-progress' } : tech
-      )
-    );
-    
-    alert(`Следующая технология: ${randomTech.title} 🎯`);
+    alert(`Следующая технология: ${randomTech.title} 🎯\n\n${randomTech.description}`);
   };
 
   return (
@@ -44,7 +39,23 @@ function QuickActions({ technologies, setTechnologies }) {
         <button onClick={randomNextTechnology} className="action-btn action-btn--random">
           🎲 Случайный выбор следующей технологии
         </button>
+        <button onClick={handleExport} className="action-btn action-btn--export">
+          📤 Экспорт данных
+        </button>
       </div>
+
+      {/* Добавить Modal в return */}
+      <Modal
+        isOpen={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        title="Экспорт данных"
+      >
+        <p>Данные успешно подготовлены для экспорта!</p>
+        <p>Проверьте консоль разработчика для просмотра данных.</p>
+        <button onClick={() => setShowExportModal(false)}>
+          Закрыть
+        </button>
+      </Modal>
     </div>
   );
 }

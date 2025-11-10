@@ -3,56 +3,26 @@ import './App.css';
 import TechnologyCard from './components/TechnologyCard';
 import ProgressHeader from './components/ProgressHeader';
 import QuickActions from './components/QuickActions';
+import useTechnologies from './hooks/useTechnologies';
 
 function App() {
-  const [technologies, setTechnologies] = useState([
-    { 
-      id: 1, 
-      title: 'React Components', 
-      description: 'Изучение функциональных и классовых компонентов, их жизненного цикла и лучших практик использования.', 
-      status: 'not-started' 
-    },
-    { 
-      id: 2, 
-      title: 'JSX Syntax', 
-      description: 'Освоение синтаксиса JSX, работа с выражениями JavaScript в разметке и понимание различий с HTML.', 
-      status: 'not-started' 
-    },
-    { 
-      id: 3, 
-      title: 'State Management', 
-      description: 'Работа с состоянием компонентов, использование useState и useEffect хуков для управления данными.', 
-      status: 'not-started' 
-    },
-    { 
-      id: 4, 
-      title: 'Props and Data Flow', 
-      description: 'Передача данных между компонентами через props, понимание однонаправленного потока данных.', 
-      status: 'not-started' 
-    },
-    { 
-      id: 5, 
-      title: 'Event Handling', 
-      description: 'Обработка событий в React, работа с формами и пользовательским вводом.', 
-      status: 'not-started' 
-    }
-  ]);
+  const { 
+    technologies, 
+    updateStatus, 
+    updateNotes, 
+    markAllCompleted, 
+    resetAllStatuses,
+    progress 
+  } = useTechnologies();
 
   const [activeFilter, setActiveFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // Функция изменения статуса технологии
-  const handleStatusChange = (id, newStatus) => {
-    setTechnologies(prevTech => 
-      prevTech.map(tech => 
-        tech.id === id ? { ...tech, status: newStatus } : tech
-      )
-    );
-  };
-
-  // Фильтрация технологий
   const filteredTechnologies = technologies.filter(tech => {
-    if (activeFilter === 'all') return true;
-    return tech.status === activeFilter;
+    const matchesFilter = activeFilter === 'all' || tech.status === activeFilter;
+    const matchesSearch = tech.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         tech.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
   });
 
   return (
@@ -60,80 +30,69 @@ function App() {
       <header className="App-header">
         <h1 className="App-title">🚀 Трекер изучения технологий</h1>
         <p className="App-subtitle">Отслеживайте ваш прогресс в освоении React и современных веб-технологий</p>
+        <div className="progress-header">
+          <div className="progress-bar">
+            <div 
+              className="progress-bar__fill"
+              style={{ width: `${progress}%` }}
+            >
+              <span className="progress-bar__text">Общий прогресс: {progress}%</span>
+            </div>
+          </div>
+        </div>
       </header>
 
       <main className="App-main">
         <ProgressHeader technologies={technologies} />
-        
-        <QuickActions 
+
+        <QuickActions
           technologies={technologies}
-          setTechnologies={setTechnologies}
+          markAllCompleted={markAllCompleted}
+          resetAllStatuses={resetAllStatuses}
         />
 
-        {/* Фильтрация */}
-        <div className="filter-buttons" style={{marginBottom: '2rem', textAlign: 'center'}}>
-          <button 
+        <div className="search-box">
+          <input
+            type="text"
+            placeholder="🔍 Поиск технологий..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          <span className="search-results">Найдено: {filteredTechnologies.length}</span>
+        </div>
+
+        <div className="filter-buttons">
+          <button
+            className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
             onClick={() => setActiveFilter('all')}
-            style={{
-              margin: '0 5px',
-              padding: '10px 15px',
-              border: '2px solid #667eea',
-              borderRadius: '20px',
-              background: activeFilter === 'all' ? '#667eea' : 'white',
-              color: activeFilter === 'all' ? 'white' : '#667eea',
-              cursor: 'pointer'
-            }}
           >
-            Все
+            Все технологии
           </button>
-          <button 
+          <button
+            className={`filter-btn ${activeFilter === 'not-started' ? 'active' : ''}`}
             onClick={() => setActiveFilter('not-started')}
-            style={{
-              margin: '0 5px',
-              padding: '10px 15px',
-              border: '2px solid #9e9e9e',
-              borderRadius: '20px',
-              background: activeFilter === 'not-started' ? '#9e9e9e' : 'white',
-              color: activeFilter === 'not-started' ? 'white' : '#9e9e9e',
-              cursor: 'pointer'
-            }}
           >
-            Не начато
+            Не начатые
           </button>
-          <button 
+          <button
+            className={`filter-btn ${activeFilter === 'in-progress' ? 'active' : ''}`}
             onClick={() => setActiveFilter('in-progress')}
-            style={{
-              margin: '0 5px',
-              padding: '10px 15px',
-              border: '2px solid #ff9800',
-              borderRadius: '20px',
-              background: activeFilter === 'in-progress' ? '#ff9800' : 'white',
-              color: activeFilter === 'in-progress' ? 'white' : '#ff9800',
-              cursor: 'pointer'
-            }}
           >
             В процессе
           </button>
-          <button 
+          <button
+            className={`filter-btn ${activeFilter === 'completed' ? 'active' : ''}`}
             onClick={() => setActiveFilter('completed')}
-            style={{
-              margin: '0 5px',
-              padding: '10px 15px',
-              border: '2px solid #4caf50',
-              borderRadius: '20px',
-              background: activeFilter === 'completed' ? '#4caf50' : 'white',
-              color: activeFilter === 'completed' ? 'white' : '#4caf50',
-              cursor: 'pointer'
-            }}
           >
-            Выполнено
+            Выполненные
           </button>
         </div>
-        
+
         <section className="technologies-section">
           <h2 className="section-title">
-            Дорожная карта изучения 
-            <span style={{fontSize: '1rem', color: '#666', marginLeft: '0.5rem'}}>
+            Дорожная карта изучения
+            <span style={{ fontSize: '1rem', color: '#666', marginLeft: '0.5rem' }}>
               ({filteredTechnologies.length} технологий)
             </span>
           </h2>
@@ -142,7 +101,8 @@ function App() {
               <TechnologyCard
                 key={technology.id}
                 technology={technology}
-                onStatusChange={handleStatusChange}
+                onStatusChange={updateStatus}
+                onNotesChange={updateNotes}
               />
             ))}
           </div>
@@ -150,7 +110,7 @@ function App() {
       </main>
 
       <footer className="App-footer">
-        <p>© 2025 Трекер изучения технологий. Создано с React ⚛️ и useState 🎯</p>
+        <p>© 2025 Трекер изучения технологий. Создано с React ⚛️ и переиспользуемыми компонентами 🎯</p>
       </footer>
     </div>
   );

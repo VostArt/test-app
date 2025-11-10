@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './TechnologyCard.css';
 
-function TechnologyCard({ technology, onStatusChange }) {
-  const { id, title, description, status } = technology;
+function TechnologyCard({ technology, onStatusChange, onNotesChange }) {
+  const { id, title, description, status, notes } = technology;
+  const [isEditingNotes, setIsEditingNotes] = useState(false);
+  const [localNotes, setLocalNotes] = useState(notes);
 
   const handleClick = () => {
-    // Циклическое переключение статусов
     const nextStatus = {
       'not-started': 'in-progress',
       'in-progress': 'completed', 
@@ -13,6 +14,16 @@ function TechnologyCard({ technology, onStatusChange }) {
     }[status];
     
     onStatusChange(id, nextStatus);
+  };
+
+  const handleNotesSave = () => {
+    onNotesChange(id, localNotes);
+    setIsEditingNotes(false);
+  };
+
+  const handleNotesCancel = () => {
+    setLocalNotes(notes);
+    setIsEditingNotes(false);
   };
 
   const getStatusIcon = () => {
@@ -45,6 +56,44 @@ function TechnologyCard({ technology, onStatusChange }) {
         </span>
       </div>
       <p className="technology-card__description">{description}</p>
+      
+      <div className="technology-card__notes" onClick={(e) => e.stopPropagation()}>
+        <h4>📝 Мои заметки:</h4>
+        {isEditingNotes ? (
+          <div className="notes-editor">
+            <textarea
+              value={localNotes}
+              onChange={(e) => setLocalNotes(e.target.value)}
+              placeholder="Записывайте сюда важные моменты..."
+              rows="3"
+              className="notes-textarea"
+            />
+            <div className="notes-actions">
+              <button onClick={handleNotesSave} className="notes-btn notes-btn--save">
+                💾 Сохранить
+              </button>
+              <button onClick={handleNotesCancel} className="notes-btn notes-btn--cancel">
+                ❌ Отмена
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div 
+            className="notes-display" 
+            onClick={() => setIsEditingNotes(true)}
+          >
+            {notes ? (
+              <p className="notes-content">{notes}</p>
+            ) : (
+              <p className="notes-placeholder">Нажмите, чтобы добавить заметку...</p>
+            )}
+            <div className="notes-hint">
+              {notes ? `Заметка сохранена (${notes.length} символов)` : 'Добавьте заметку'}
+            </div>
+          </div>
+        )}
+      </div>
+
       <div className="technology-card__footer">
         <span className="technology-card__badge">Кликни для смены статуса</span>
       </div>
