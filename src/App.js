@@ -3,6 +3,7 @@ import './App.css';
 import TechnologyCard from './components/TechnologyCard';
 import ProgressHeader from './components/ProgressHeader';
 import QuickActions from './components/QuickActions';
+import Modal from './components/Modal';
 import useTechnologies from './hooks/useTechnologies';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
 
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showExportModal, setShowExportModal] = useState(false);
 
   const filteredTechnologies = technologies.filter(tech => {
     const matchesFilter = activeFilter === 'all' || tech.status === activeFilter;
@@ -24,6 +26,16 @@ function App() {
                          tech.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
+
+  const handleExport = () => {
+    const data = {
+      exportedAt: new Date().toISOString(),
+      technologies: technologies
+    };
+    const dataStr = JSON.stringify(data, null, 2);
+    console.log('Данные для экспорта:', dataStr);
+    setShowExportModal(true);
+  };
 
   return (
     <div className="App">
@@ -49,6 +61,7 @@ function App() {
           technologies={technologies}
           markAllCompleted={markAllCompleted}
           resetAllStatuses={resetAllStatuses}
+          onExport={handleExport}
         />
 
         <div className="search-box">
@@ -107,6 +120,23 @@ function App() {
             ))}
           </div>
         </section>
+
+        {/* Modal на верхнем уровне */}
+        <Modal
+          isOpen={showExportModal}
+          onClose={() => setShowExportModal(false)}
+          title="📤 Экспорт данных"
+        >
+          <div className="export-content">
+            <p>✅ Данные успешно подготовлены для экспорта!</p>
+            <p>🔍 Проверьте консоль разработчика для просмотра данных.</p>
+            <div style={{textAlign: 'center', marginTop: '1.5rem'}}>
+              <button onClick={() => setShowExportModal(false)}>
+                Закрыть
+              </button>
+            </div>
+          </div>
+        </Modal>
       </main>
 
       <footer className="App-footer">

@@ -1,20 +1,7 @@
-import React, { useState } from 'react'; // Добавить useState
-import Modal from './Modal'; // Убедиться что этот импорт есть
+import React from 'react';
 import './QuickActions.css';
 
-function QuickActions({ technologies, markAllCompleted, resetAllStatuses }) {
-  const [showExportModal, setShowExportModal] = useState(false); // Добавить состояние
-
-  const handleExport = () => {
-    const data = {
-      exportedAt: new Date().toISOString(),
-      technologies: technologies
-    };
-    const dataStr = JSON.stringify(data, null, 2);
-    console.log('Данные для экспорта:', dataStr);
-    setShowExportModal(true); // Открыть модалку вместо alert
-  };
-
+function QuickActions({ technologies, markAllCompleted, resetAllStatuses, onExport }) {
   const randomNextTechnology = () => {
     const notStarted = technologies.filter(tech => tech.status === 'not-started');
     if (notStarted.length === 0) {
@@ -39,23 +26,10 @@ function QuickActions({ technologies, markAllCompleted, resetAllStatuses }) {
         <button onClick={randomNextTechnology} className="action-btn action-btn--random">
           🎲 Случайный выбор следующей технологии
         </button>
-        <button onClick={handleExport} className="action-btn action-btn--export">
+        <button onClick={onExport} className="action-btn action-btn--export">
           📤 Экспорт данных
         </button>
       </div>
-
-      {/* Добавить Modal в return */}
-      <Modal
-        isOpen={showExportModal}
-        onClose={() => setShowExportModal(false)}
-        title="Экспорт данных"
-      >
-        <p>Данные успешно подготовлены для экспорта!</p>
-        <p>Проверьте консоль разработчика для просмотра данных.</p>
-        <button onClick={() => setShowExportModal(false)}>
-          Закрыть
-        </button>
-      </Modal>
     </div>
   );
 }

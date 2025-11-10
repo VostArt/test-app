@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-// Готовый useLocalStorage из теоретической части задания
 function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
     try {
