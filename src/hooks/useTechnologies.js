@@ -98,6 +98,24 @@ function useTechnologies() {
     );
   };
 
+  const importTechnologies = (newTechnologies) => {
+    setTechnologies(prev => {
+      const existingIds = new Set(prev.map(tech => tech.id));
+      const uniqueNewTechnologies = newTechnologies.filter(tech => !existingIds.has(tech.id));
+      return [...prev, ...uniqueNewTechnologies];
+    });
+  };
+
+  // ДОБАВЛЯЕМ ФУНКЦИЮ УДАЛЕНИЯ
+  const deleteTechnology = (techId) => {
+    setTechnologies(prev => prev.filter(tech => tech.id !== techId));
+  };
+
+  // ДОБАВЛЯЕМ ФУНКЦИЮ УДАЛЕНИЯ ВСЕХ ТЕХНОЛОГИЙ
+  const deleteAllTechnologies = () => {
+    setTechnologies([]);
+  };
+
   const calculateProgress = () => {
     if (technologies.length === 0) return 0;
     const completed = technologies.filter(tech => tech.status === 'completed').length;
@@ -110,6 +128,9 @@ function useTechnologies() {
     updateNotes,
     markAllCompleted,
     resetAllStatuses,
+    importTechnologies,
+    deleteTechnology, 
+    deleteAllTechnologies, 
     progress: calculateProgress()
   };
 }
