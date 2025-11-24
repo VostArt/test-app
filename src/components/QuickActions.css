@@ -97,14 +97,51 @@
     0 10px 25px rgba(156, 39, 176, 0.4),
     0 0 40px rgba(156, 39, 176, 0.6);
 }
-.action-btn--export {
+
+.action-btn--bulk {
   background: linear-gradient(135deg, #2196f3, #1976d2);
   color: white;
   box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
 }
 
-.action-btn--export:hover {
+.action-btn--bulk:hover {
   box-shadow: 
     0 10px 25px rgba(33, 150, 243, 0.4),
     0 0 40px rgba(33, 150, 243, 0.6);
+}
+
+.action-btn--export {
+  background: linear-gradient(135deg, #607d8b, #455a64);
+  color: white;
+  box-shadow: 0 4px 15px rgba(96, 125, 139, 0.3);
+}
+
+.action-btn--export:hover {
+  box-shadow: 
+    0 10px 25px rgba(96, 125, 139, 0.4),
+    0 0 40px rgba(96, 125, 139, 0.6);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .actions-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+  
+  .action-btn {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-actions {
+    padding: 1rem;
+  }
+  
+  .action-btn {
+    padding: 0.8rem;
+    font-size: 0.8rem;
+  }
 }

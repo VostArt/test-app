@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import useTechnologies from '../hooks/useTechnologies';
+import { useApp } from '../context/AppContext';
 
 function Settings() {
   const { technologies, resetAllStatuses, markAllCompleted } = useTechnologies();
+  const { themeMode } = useApp();
   const [exportData, setExportData] = useState('');
 
   const handleExport = () => {
@@ -67,12 +69,54 @@ function Settings() {
         <p style={{ color: '#b0b0b0' }}>Управление данными и настройками трекера</p>
       </div>
 
-      <div style={{
-        background: 'rgba(255, 255, 255, 0.05)',
+      {/* Информация о текущей теме */}
+      <div className="settings-section" style={{
         borderRadius: '16px',
         padding: '2rem',
-        marginBottom: '2rem',
-        border: '1px solid rgba(255, 255, 255, 0.1)'
+        marginBottom: '2rem'
+      }}>
+        <h3 style={{ color: '#ffffff', marginBottom: '1.5rem' }}>🎨 Текущая тема</h3>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '1rem',
+          padding: '1rem',
+          background: 'rgba(255, 255, 255, 0.05)',
+          borderRadius: '8px',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+          <div style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '8px',
+            background: themeMode === 'dark' ? 'linear-gradient(135deg, #667eea, #764ba2)' : 
+                        themeMode === 'light' ? 'linear-gradient(135deg, #495057, #6c757d)' : 
+                        'linear-gradient(135deg, #666666, #888888)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: '1.2rem'
+          }}>
+            {themeMode === 'dark' ? '🌙' : themeMode === 'light' ? '🌞' : '🎭'}
+          </div>
+          <div>
+            <div style={{ color: '#ffffff', fontWeight: '600' }}>
+              {themeMode === 'dark' ? 'Тёмная тема' : 
+               themeMode === 'light' ? 'Светлая тема' : 'Серая тема'}
+            </div>
+            <div style={{ color: '#b0b0b0', fontSize: '0.9rem' }}>
+              Используйте переключатель в навигации для смены темы
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="settings-section" style={{
+        borderRadius: '16px',
+        padding: '2rem',
+        marginBottom: '2rem'
       }}>
         <h3 style={{ color: '#ffffff', marginBottom: '1.5rem' }}>📊 Управление прогрессом</h3>
         
@@ -106,12 +150,10 @@ function Settings() {
         </p>
       </div>
 
-      <div style={{
-        background: 'rgba(255, 255, 255, 0.05)',
+      <div className="settings-section" style={{
         borderRadius: '16px',
         padding: '2rem',
-        marginBottom: '2rem',
-        border: '1px solid rgba(255, 255, 255, 0.1)'
+        marginBottom: '2rem'
       }}>
         <h3 style={{ color: '#ffffff', marginBottom: '1.5rem' }}>📁 Экспорт и импорт данных</h3>
         
@@ -123,22 +165,31 @@ function Settings() {
             📤 Экспорт данных
           </button>
           {exportData && (
-            <textarea
-              value={exportData}
-              readOnly
-              rows="8"
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '2px solid rgba(102, 126, 234, 0.3)',
-                borderRadius: '8px',
-                background: 'rgba(255, 255, 255, 0.1)',
-                color: '#ffffff',
-                fontFamily: 'monospace',
-                fontSize: '0.9rem',
-                marginTop: '1rem'
-              }}
-            />
+            <div style={{ marginTop: '1rem' }}>
+              <label style={{ 
+                display: 'block', 
+                color: '#ffffff', 
+                marginBottom: '0.5rem',
+                fontWeight: '600'
+              }}>
+                Экспортированные данные:
+              </label>
+              <textarea
+                value={exportData}
+                readOnly
+                rows="8"
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '2px solid rgba(102, 126, 234, 0.3)',
+                  borderRadius: '8px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  color: '#ffffff',
+                  fontFamily: 'monospace',
+                  fontSize: '0.9rem'
+                }}
+              />
+            </div>
           )}
         </div>
 
@@ -164,14 +215,15 @@ function Settings() {
               color: '#ffffff'
             }}
           />
+          <p style={{ color: '#b0b0b0', fontSize: '0.8rem', marginTop: '0.5rem' }}>
+            Формат: JSON | Обязательные поля: title, description
+          </p>
         </div>
       </div>
 
-      <div style={{
-        background: 'rgba(255, 255, 255, 0.05)',
+      <div className="settings-section danger-zone" style={{
         borderRadius: '16px',
-        padding: '2rem',
-        border: '1px solid rgba(255, 255, 255, 0.1)'
+        padding: '2rem'
       }}>
         <h3 style={{ color: '#ffffff', marginBottom: '1.5rem' }}>⚠️ Опасная зона</h3>
         

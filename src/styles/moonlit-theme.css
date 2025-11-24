@@ -1,0 +1,188 @@
+/* moonlit-theme.css */
+
+/* Основные цветовые переменные */
+:root {
+  --color-bg: #f7f9fc;             /* очень светлый фон */
+  --color-primary: #495670;        /* лунно-синий / серо-синий */
+  --color-accent: #a5b8ff;         /* светлый лавандово-синий акцент */
+  --color-text: #2e3d59;           /* тёмный текст */
+  --color-text-light: #5f6c87;     /* чуть светлее для второстепенного текста */
+  --color-border: #dfe4ee;         /* светлая рамка / разделитель */
+  --color-highlight: #ffffe8;      /* лёгкий желтоватый световой эффект */
+  --radius-base: 8px;
+  --transition-base: 0.3s ease-in-out;
+}
+
+/* Общие стили */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* Контейнеры / блоки */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  padding: 1.5rem;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transform: translateY(-4px);
+}
+
+/* Заголовки */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text);
+  margin-top: 0;
+}
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+h2 {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Меню / навигация */
+.navbar {
+  background-color: var(--color-bg);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.navbar .nav-link {
+  color: var(--color-text-light);
+  margin-right: 1.5rem;
+  font-weight: 500;
+}
+.navbar .nav-link:hover {
+  color: var(--color-text);
+}
+
+/* Кнопки */
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: background-color var(--transition-base), transform var(--transition-base);
+}
+.btn:hover {
+  background-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Формы */
+input[type="text"], input[type="email"], textarea, select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  background-color: #ffffff;
+  color: var(--color-text);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(164,184,255,0.3);
+  outline: none;
+}
+
+/* Дополнительные эффекты «лунного» света */
+.highlight-moon {
+  background-color: var(--color-highlight);
+  padding: 1rem;
+  border-radius: var(--radius-base);
+}
+.shadow-moon {
+  box-shadow: 0 8px 16px rgba(164,184,255,0.3);
+}
+
+/* Эффект мерцающих звёзд */
+.stars {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -2;
+  background: transparent;
+}
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  opacity: 0.8;
+  border-radius: 50%;
+  animation: starTwinkle 3s infinite ease-in-out;
+}
+@keyframes starTwinkle {
+  0%   { opacity: 0.2; transform: scale(1); }
+  50%  { opacity: 1;   transform: scale(1.4); }
+  100% { opacity: 0.2; transform: scale(1); }
+}
+
+/* Эффект moon-glow (свечение) */
+.moon-glow {
+  position: relative;
+}
+.moon-glow::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+  filter: blur(18px);
+  background: radial-gradient(circle,
+    rgba(255,255,255,0.35),
+    rgba(120,100,240,0.25),
+    transparent);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Адаптация для медиазапросов */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}

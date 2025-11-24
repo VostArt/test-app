@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import TechnologyCard from '../components/TechnologyCard';
+import MuiTechnologyCard from '../components/MuiTechnologyCard';
 import useTechnologies from '../hooks/useTechnologies';
 
 function TechnologyList() {
@@ -8,7 +8,7 @@ function TechnologyList() {
     technologies, 
     updateStatus, 
     updateNotes, 
-    deleteTechnology // ДОБАВЛЯЕМ ФУНКЦИЮ УДАЛЕНИЯ
+    deleteTechnology
   } = useTechnologies();
   
   const [searchQuery, setSearchQuery] = useState('');
@@ -75,12 +75,12 @@ function TechnologyList() {
       <section className="technologies-section">
         <div className="technologies-grid">
           {filteredTechnologies.map(technology => (
-            <TechnologyCard
+            <MuiTechnologyCard
               key={technology.id}
               technology={technology}
               onStatusChange={updateStatus}
               onNotesChange={updateNotes}
-              onDelete={deleteTechnology} // ТЕПЕРЬ ФУНКЦИЯ ОПРЕДЕЛЕНА
+              onDelete={deleteTechnology}
             />
           ))}
         </div>

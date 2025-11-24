@@ -1,45 +1,31 @@
 import React, { useState } from 'react';
-import './TechnologyCard.css';
-import Modal from './Modal';
 
 function TechnologyCard({ technology, onStatusChange, onNotesChange, onDelete }) {
-  const { id, title, description, status, notes } = technology;
   const [isEditingNotes, setIsEditingNotes] = useState(false);
-  const [localNotes, setLocalNotes] = useState(notes);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [localNotes, setLocalNotes] = useState(technology.notes || '');
 
-  const handleClick = () => {
+  const handleStatusChange = () => {
     const nextStatus = {
       'not-started': 'in-progress',
-      'in-progress': 'completed', 
+      'in-progress': 'completed',
       'completed': 'not-started'
-    }[status];
+    }[technology.status];
     
-    onStatusChange(id, nextStatus);
+    onStatusChange(technology.id, nextStatus);
   };
 
   const handleNotesSave = () => {
-    onNotesChange(id, localNotes);
+    onNotesChange(technology.id, localNotes);
     setIsEditingNotes(false);
   };
 
   const handleNotesCancel = () => {
-    setLocalNotes(notes);
+    setLocalNotes(technology.notes || '');
     setIsEditingNotes(false);
   };
 
-  const handleDeleteClick = (e) => {
-    e.stopPropagation();
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDeleteConfirm = () => {
-    onDelete(id);
-    setShowDeleteConfirm(false);
-  };
-
   const getStatusIcon = () => {
-    switch (status) {
+    switch (technology.status) {
       case 'completed': return '✅';
       case 'in-progress': return '🔄';
       case 'not-started': return '⏳';
@@ -48,7 +34,7 @@ function TechnologyCard({ technology, onStatusChange, onNotesChange, onDelete })
   };
 
   const getStatusText = () => {
-    switch (status) {
+    switch (technology.status) {
       case 'completed': return 'Изучено';
       case 'in-progress': return 'В процессе';
       case 'not-started': return 'Не начато';
@@ -57,144 +43,104 @@ function TechnologyCard({ technology, onStatusChange, onNotesChange, onDelete })
   };
 
   return (
-    <>
-      <div 
-        className={`technology-card technology-card--${status}`}
-        onClick={handleClick}
-      >
-        {/* Заголовок с иконкой покемона и кнопкой удаления */}
-        <div className="technology-card__header">
-          <h3 className="technology-card__title">
+    <div className="technology-card" onClick={handleStatusChange}>
+      <div className="tech-header">
+        <div className="tech-title-section">
+          <h3 className="tech-title">
             {technology.isFromApi && '🐰 '}
-            {title}
+            {technology.title}
             {technology.isFromApi && (
-              <span style={{ 
-                fontSize: '0.7rem', 
-                color: '#ffcb05',
-                marginLeft: '0.5rem',
-                fontWeight: 'normal'
-              }}>
-                PokéAPI
-              </span>
+              <span className="api-badge">PokéAPI</span>
             )}
           </h3>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span className="technology-card__status">
+          <div className="tech-status">
+            <span className={`status-badge status-${technology.status}`}>
               {getStatusIcon()} {getStatusText()}
             </span>
-            <button
-              onClick={handleDeleteClick}
-              style={{
-                background: 'rgba(244, 67, 54, 0.1)',
-                border: '1px solid rgba(244, 67, 54, 0.3)',
-                borderRadius: '6px',
-                color: '#f44336',
-                cursor: 'pointer',
-                padding: '4px 8px',
-                fontSize: '0.7rem',
-                fontWeight: '600'
-              }}
-              title="Удалить технологию"
-            >
-              🗑️
-            </button>
           </div>
         </div>
-
-        {/* Спрайт покемона если есть */}
-        {technology.pokemonData?.sprite && (
-          <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-            <img 
-              src={technology.pokemonData.sprite} 
-              alt={title}
-              style={{ 
-                width: '80px', 
-                height: '80px',
-                background: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: '8px',
-                padding: '4px'
-              }}
-            />
-          </div>
-        )}
-
-        <p className="technology-card__description">{description}</p>
-
-        {/* Дополнительная информация для покемонов */}
-        {technology.isFromApi && technology.pokemonData && (
-          <div style={{ 
-            background: 'rgba(255, 255, 255, 0.05)',
-            borderRadius: '8px',
-            padding: '0.75rem',
-            marginBottom: '1rem',
-            fontSize: '0.8rem'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-              <span style={{ color: '#b0b0b0' }}>Тип:</span>
-              <span style={{ color: '#ffffff' }}>{technology.pokemonData.types.join(', ')}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-              <span style={{ color: '#b0b0b0' }}>Рост:</span>
-              <span style={{ color: '#ffffff' }}>{technology.pokemonData.height} м</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#b0b0b0' }}>Вес:</span>
-              <span style={{ color: '#ffffff' }}>{technology.pokemonData.weight} кг</span>
-            </div>
-          </div>
-        )}
-        
-        <div className="technology-card__notes" onClick={(e) => e.stopPropagation()}>
-          <h4>📝 Мои заметки:</h4>
-          {isEditingNotes ? (
-            <div className="notes-editor">
-              <textarea
-                value={localNotes}
-                onChange={(e) => setLocalNotes(e.target.value)}
-                placeholder="Записывайте сюда важные моменты..."
-                rows="3"
-                className="notes-textarea"
-              />
-              <div className="notes-actions">
-                <button onClick={handleNotesSave} className="notes-btn notes-btn--save">
-                  💾 Сохранить
-                </button>
-                <button onClick={handleNotesCancel} className="notes-btn notes-btn--cancel">
-                  ❌ Отмена
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div 
-              className="notes-display" 
-              onClick={() => setIsEditingNotes(true)}
-            >
-              {notes ? (
-                <p className="notes-content">{notes}</p>
-              ) : (
-                <p className="notes-placeholder">Нажмите, чтобы добавить заметку...</p>
-              )}
-              <div className="notes-hint">
-                {notes ? `Заметка сохранена (${notes.length} символов)` : 'Добавьте заметку'}
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="technology-card__footer">
-          <span className="technology-card__badge">Кликни для смены статуса</span>
-        </div>
+        <button 
+          className="delete-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (window.confirm(`Удалить технологию "${technology.title}"?`)) {
+              onDelete(technology.id);
+            }
+          }}
+          aria-label="Удалить технологию"
+        >
+          🗑️
+        </button>
       </div>
 
-      {/* Модальное окно подтверждения удаления */}
-      <Modal
-        isOpen={showDeleteConfirm}
-        onClose={() => setShowDeleteConfirm(false)}
-        onConfirm={handleDeleteConfirm}
-        type="delete"
-        technology={technology}
-      />
-    </>
+      {technology.pokemonData?.sprite && (
+        <div className="pokemon-sprite">
+          <img 
+            src={technology.pokemonData.sprite} 
+            alt={technology.title}
+          />
+        </div>
+      )}
+
+      <p className="tech-description">{technology.description}</p>
+
+      {technology.isFromApi && technology.pokemonData && (
+        <div className="pokemon-info">
+          <div className="pokemon-stats">
+            <span><strong>Тип:</strong> {technology.pokemonData.types.join(', ')}</span>
+            <span><strong>Рост:</strong> {technology.pokemonData.height}м</span>
+            <span><strong>Вес:</strong> {technology.pokemonData.weight}кг</span>
+          </div>
+        </div>
+      )}
+      
+      <div className="notes-section" onClick={(e) => e.stopPropagation()}>
+        <div className="notes-header">
+          <span>📝 Мои заметки:</span>
+        </div>
+        
+        {isEditingNotes ? (
+          <div className="notes-editor">
+            <textarea
+              value={localNotes}
+              onChange={(e) => setLocalNotes(e.target.value)}
+              placeholder="Записывайте сюда важные моменты..."
+              className="notes-textarea"
+              rows="3"
+            />
+            <div className="notes-actions">
+              <button onClick={handleNotesSave} className="save-btn">
+                💾 Сохранить
+              </button>
+              <button onClick={handleNotesCancel} className="cancel-btn">
+                ❌ Отмена
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div 
+            className={`notes-display ${!technology.notes ? 'empty-notes' : ''}`}
+            onClick={() => setIsEditingNotes(true)}
+          >
+            {technology.notes ? (
+              <p className="notes-content">{technology.notes}</p>
+            ) : (
+              <p className="notes-placeholder">Нажмите, чтобы добавить заметку...</p>
+            )}
+            <div className="notes-meta">
+              {technology.notes 
+                ? `Заметка сохранена (${technology.notes.length} символов)` 
+                : 'Добавьте заметку'
+              }
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="tech-footer">
+        <span className="click-hint">Кликни для смены статуса</span>
+      </div>
+    </div>
   );
 }
 

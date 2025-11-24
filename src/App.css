@@ -7,235 +7,385 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #0f0f1b 0%, #1a1a2e 50%, #16213e 100%);
-  min-height: 100vh;
   color: #e0e0e0;
+  min-height: 100vh;
+  line-height: 1.6;
 }
 
 .App {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
-.App-header {
-  background: linear-gradient(135deg, #0f0f1b 0%, #1a1a2e 50%, #16213e 100%);
-  color: #e0e0e0;
-  padding: 3rem 2rem;
-  text-align: center;
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.3),
-    0 0 30px rgba(102, 126, 234, 0.4);
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid #33334d;
-}
-
-.App-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #00ffff, transparent);
-  animation: neonGlow 3s ease-in-out infinite alternate;
-}
-
-@keyframes neonGlow {
-  0% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
-
-.App-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #e0e0e0;
-  text-shadow: 
-    0 0 10px rgba(224, 224, 224, 0.8),
-    0 0 20px rgba(102, 126, 234, 0.6),
-    0 0 30px rgba(102, 126, 234, 0.4);
-}
-
-.App-subtitle {
-  font-size: 1.1rem;
-  opacity: 0.9;
-  font-weight: 300;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-  color: #b0b0b0;
-  text-shadow: 0 0 10px rgba(176, 176, 176, 0.5);
-}
 .App-main {
-  flex: 1;
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  width: 100%;
+  min-height: calc(100vh - 80px);
 }
 
-.technologies-section {
-  margin-bottom: 3rem;
-}
-
-.section-title {
-  font-size: 2rem;
-  color: #ffffff;
-  margin-bottom: 2rem;
-  text-align: center;
-  font-weight: 600;
-  text-shadow: 
-    0 0 10px rgba(255, 255, 255, 0.3),
-    0 0 20px rgba(255, 255, 255, 0.2);
-}
-
-.technologies-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 1.5rem;
-}
-
-.App-footer {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  color: #a0a0c0;
-  text-align: center;
-  padding: 2rem;
-  margin-top: auto;
-  border-top: 1px solid #33334d;
-  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
-}
-
-.App-footer p {
-  opacity: 0.8;
-  font-size: 0.9rem;
-  text-shadow: 0 0 5px rgba(160, 160, 192, 0.5);
-}
-
-/* Анимации */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+/* Стили для карточек технологий */
 .technology-card {
-  animation: fadeIn 0.6s ease-out;
-}
-
-/* Неоновые кнопки фильтра */
-.filter-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-
-.filter-btn {
-  padding: 12px 24px;
-  border: 2px solid;
-  border-radius: 25px;
   background: rgba(255, 255, 255, 0.05);
-  color: #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-weight: 500;
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
 }
 
-.filter-btn::before {
+.technology-card::before {
   content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s ease;
 }
 
-.filter-btn:hover::before {
+.technology-card:hover::before {
   left: 100%;
 }
 
-.filter-btn:hover {
-  transform: translateY(-2px);
+.technology-card:hover {
+  transform: translateY(-5px);
   box-shadow: 
-    0 5px 15px rgba(0, 0, 0, 0.3),
-    0 0 20px currentColor;
+    0 10px 30px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.4);
 }
 
-.filter-btn:nth-child(1) { border-color: #667eea; color: #667eea; }
-.filter-btn:nth-child(2) { border-color: #9e9e9e; color: #9e9e9e; }
-.filter-btn:nth-child(3) { border-color: #ff9800; color: #ff9800; }
-.filter-btn:nth-child(4) { border-color: #4caf50; color: #4caf50; }
+.tech-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.tech-title-section {
+  flex: 1;
+}
+
+.tech-title {
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.api-badge {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.tech-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.status-completed {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: rgba(76, 175, 80, 0.4);
+  color: #4caf50;
+}
+
+.status-in-progress {
+  background: rgba(255, 152, 0, 0.2);
+  border-color: rgba(255, 152, 0, 0.4);
+  color: #ff9800;
+}
+
+.status-not-started {
+  background: rgba(158, 158, 158, 0.2);
+  border-color: rgba(158, 158, 158, 0.4);
+  color: #9e9e9e;
+}
+
+.delete-btn {
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  color: #f44336;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.delete-btn:hover {
+  background: rgba(244, 67, 54, 0.2);
+  transform: scale(1.1);
+}
+
+.pokemon-sprite {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.pokemon-sprite img {
+  width: 80px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.tech-description {
+  color: #b0b0b0;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.pokemon-info {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pokemon-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.pokemon-stats span {
+  color: #b0b0b0;
+}
+
+.notes-section {
+  margin-top: 1rem;
+}
+
+.notes-header {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.notes-display {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notes-display:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.empty-notes {
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.notes-content {
+  color: #e0e0e0;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.notes-placeholder {
+  color: #888;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.notes-meta {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.notes-editor {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.notes-textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 0.8rem;
+  color: #e0e0e0;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.notes-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+}
+
+.notes-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.save-btn, .cancel-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.save-btn {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+  border: 1px solid rgba(76, 175, 80, 0.4);
+}
+
+.save-btn:hover {
+  background: rgba(76, 175, 80, 0.3);
+}
+
+.cancel-btn {
+  background: rgba(158, 158, 158, 0.2);
+  color: #9e9e9e;
+  border: 1px solid rgba(158, 158, 158, 0.4);
+}
+
+.cancel-btn:hover {
+  background: rgba(158, 158, 158, 0.3);
+}
+
+.tech-footer {
+  text-align: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.click-hint {
+  color: #666;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+/* Поисковая строка */
+.search-box {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 1rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.search-input::placeholder {
+  color: #b0b0b0;
+}
+
+.search-results {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b0b0b0;
+  font-size: 0.9rem;
+}
+
+/* Кнопки фильтров */
+.filter-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #b0b0b0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+}
+
+.filter-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
 
 .filter-btn.active {
-  background: linear-gradient(135deg, currentColor, rgba(255, 255, 255, 0.2)) !important;
-  color: #ffffff !important;
-  box-shadow: 
-    0 0 20px currentColor,
-    0 0 40px currentColor,
-    inset 0 0 20px rgba(255, 255, 255, 0.3);
-  text-shadow: 
-    0 0 10px rgba(255, 255, 255, 0.9),
-    0 0 20px rgba(255, 255, 255, 0.7),
-    0 0 30px rgba(255, 255, 255, 0.5);
-  font-weight: 700;
-  border: 2px solid rgba(255, 255, 255, 0.5) !important;
-  transform: translateY(-2px) scale(1.05);
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #ffffff;
+  border-color: rgba(102, 126, 234, 0.5);
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
 }
 
-/* Индивидуальные градиенты для каждой кнопки */
-.filter-btn.active:nth-child(1) {
-  background: linear-gradient(135deg, #667eea, #5a6fd8, #667eea) !important;
-  box-shadow: 
-    0 0 20px #667eea,
-    0 0 40px #667eea,
-    inset 0 0 20px rgba(255, 255, 255, 0.3);
+/* Сетка технологий */
+.technologies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
 }
 
-.filter-btn.active:nth-child(2) {
-  background: linear-gradient(135deg, #9e9e9e, #8e8e8e, #9e9e9e) !important;
-  box-shadow: 
-    0 0 20px #9e9e9e,
-    0 0 40px #9e9e9e,
-    inset 0 0 20px rgba(255, 255, 255, 0.3);
+.section-title {
+  color: #ffffff;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-.filter-btn.active:nth-child(3) {
-  background: linear-gradient(135deg, #ff9800, #e68900, #ff9800) !important;
-  box-shadow: 
-    0 0 20px #ff9800,
-    0 0 40px #ff9800,
-    inset 0 0 20px rgba(255, 255, 255, 0.3);
-}
-
-.filter-btn.active:nth-child(4) {
-  background: linear-gradient(135deg, #4caf50, #43a047, #4caf50) !important;
-  box-shadow: 
-    0 0 20px #4caf50,
-    0 0 40px #4caf50,
-    inset 0 0 20px rgba(255, 255, 255, 0.3);
-}
 /* Адаптивность */
 @media (max-width: 768px) {
-  .App-header {
-    padding: 2rem 1rem;
-  }
-  
-  .App-title {
-    font-size: 2rem;
-  }
-  
   .App-main {
     padding: 1rem;
   }
@@ -245,115 +395,28 @@ body {
     gap: 1rem;
   }
   
-  .section-title {
-    font-size: 1.5rem;
-  }
-  
   .filter-buttons {
     gap: 0.5rem;
   }
   
   .filter-btn {
-    padding: 10px 16px;
+    padding: 0.6rem 1.2rem;
     font-size: 0.9rem;
   }
-}
-
-@media (max-width: 480px) {
-  .App-title {
-    font-size: 1.75rem;
+  
+  .search-results {
+    position: static;
+    transform: none;
+    margin-top: 0.5rem;
+    text-align: center;
   }
   
-  .App-subtitle {
-    font-size: 1rem;
-  }
-  
-  .technologies-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .filter-buttons {
+  .tech-header {
     flex-direction: column;
-    align-items: center;
+    gap: 1rem;
   }
   
-  .filter-btn {
-    width: 200px;
+  .tech-title {
+    font-size: 1.1rem;
   }
-}
-/* Стили для поиска */
-.search-box {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.search-input {
-  flex: 1;
-  padding: 12px 16px;
-  border: 2px solid rgba(102, 126, 234, 0.3);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
-}
-
-.search-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.search-results {
-  color: #b0b0b0;
-  font-size: 0.9rem;
-  white-space: nowrap;
-}
-/* Progress bar в шапке */
-.progress-bar {
-  width: 100%;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-top: 1rem;
-}
-
-.progress-bar__fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4caf50, #45a049);
-  border-radius: 10px;
-  transition: width 0.5s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.progress-bar__text {
-  color: white;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-/* Добавить в конец App.css */
-.App, .App-main, .quick-actions, .technologies-section {
-  position: static !important;
-  overflow: visible !important;
-}
-
-/* Убедитесь что нет ограничений по высоте */
-body, html, #root {
-  overflow: visible !important;
-  position: static !important;
 }
